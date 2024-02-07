@@ -1,0 +1,13 @@
+Original/
+Templates/
+PPT/PPTExamples/
+**/bin
+**/obj
+*.suo
+*.user
+*.ldf
+*.mdf
+**/.vs
+**/TargetSolution
+OldAllfilesOld.zip
+*delete

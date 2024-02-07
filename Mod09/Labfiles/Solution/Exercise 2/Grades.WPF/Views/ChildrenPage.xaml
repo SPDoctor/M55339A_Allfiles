@@ -1,0 +1,44 @@
+﻿<UserControl
+    x:Class="Grades.WPF.ChildrenPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Grades.WPF">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            x:Name="txtClass"
+            Grid.Row="0"
+            Margin="15,5,0,0"
+            FontSize="18"
+            Style="{StaticResource LabelLeft}" />
+
+        <ScrollViewer
+            Grid.Row="1"
+            Margin="15"
+            BorderThickness="0"
+            VerticalScrollBarVisibility="Auto">
+            <ItemsControl x:Name="list">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="8">
+                            <local:StudentPhoto Height="150" Width="127.5" Cursor="Hand" MouseLeftButtonUp="Child_Click" MouseEnter="Child_MouseEnter" MouseLeave="Child_MouseLeave" />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

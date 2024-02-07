@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Models\Department.cs" Link="Models\Department.cs" />
+    <Compile Include="..\Models\EmployeeRequirements.cs" Link="Models\EmployeeRequirements.cs" />
+    <Compile Include="..\Models\JobApplication.cs" Link="Models\JobApplication.cs" />
+    <Compile Include="..\Models\Meeting.cs" Link="Models\Meeting.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.8" />
+  </ItemGroup>
+
+</Project>
