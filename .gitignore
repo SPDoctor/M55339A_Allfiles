@@ -9,5 +9,7 @@ PPT/PPTExamples/
 *.mdf
 **/.vs
 **/TargetSolution
+node_modules
 OldAllfilesOld.zip
+Instructions/
 *delete
