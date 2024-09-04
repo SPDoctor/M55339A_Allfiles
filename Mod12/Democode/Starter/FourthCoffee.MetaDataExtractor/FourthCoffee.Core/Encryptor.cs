@@ -38,7 +38,7 @@ namespace FourthCoffee.Core
         }
         private Rfc2898DeriveBytes GeneratePasswordHash(string password)
         {
-            return new Rfc2898DeriveBytes(password, this._salt);
+            return new Rfc2898DeriveBytes(password, this._salt, 1000, HashAlgorithmName.SHA1);
         }
         private byte[] GenerateKey(Rfc2898DeriveBytes passwordHash)
         {

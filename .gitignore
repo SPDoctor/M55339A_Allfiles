@@ -7,6 +7,8 @@ PPT/PPTExamples/
 *.user
 *.ldf
 *.mdf
+*.db-wal
+*.db-shm
 **/.vs
 **/TargetSolution
 node_modules
