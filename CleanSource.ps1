@@ -4,13 +4,20 @@ Get-ChildItem . -include .vs,bin,obj,TestResults -Recurse -Force | ForEach-Objec
   Remove-Item $_.FullName -Force -Recurse 
 }
 
-# Remove all .db-wal files
-Get-ChildItem . -Filter *.db-wal -Recurse -Force | ForEach-Object {
+# Remove all school.db-wal files
+Get-ChildItem . -Filter school.db-wal -Recurse -Force | ForEach-Object {
   Write-Host "Removing" + $_.FullName
   Remove-Item $_.FullName -Force
 }
-# Remove all .db-shm files
-Get-ChildItem . -Filter *.db-shm -Recurse -Force | ForEach-Object {
+
+# Remove all school.db-shm files
+Get-ChildItem . -Filter school.db-shm -Recurse -Force | ForEach-Object {
+  Write-Host "Removing" + $_.FullName
+  Remove-Item $_.FullName -Force
+}
+
+# Remove all school.db files
+Get-ChildItem . -Filter school.db -Recurse -Force | ForEach-Object {
   Write-Host "Removing" + $_.FullName
   Remove-Item $_.FullName -Force
 }
