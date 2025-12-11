@@ -1,5 +1,4 @@
 ﻿using Microsoft.Office.Interop.Word;
-using System.Configuration;
 using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -15,7 +14,7 @@ namespace School
         public WordWrapper()
         {
             this._word = new Microsoft.Office.Interop.Word.Application { Visible = false };
-            this._certificateSubjectName = ConfigurationManager.AppSettings.Get("CertificateName");
+            this._certificateSubjectName = "CN=Grades";
         }
 
         #region WordInterop

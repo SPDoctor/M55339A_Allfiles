@@ -1,5 +1,4 @@
 ﻿using Microsoft.Office.Interop.Word;
-using System.Configuration;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -21,7 +20,7 @@ namespace Grades.Utilities
         public WordWrapper()
         {
             this._word = new Application { Visible = false };
-            this._certificateSubjectName = ConfigurationManager.AppSettings.Get("CertificateName");
+            this._certificateSubjectName = "CN=Grades";
         }
 
         #region WordInterop

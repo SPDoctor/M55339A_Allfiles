@@ -145,8 +145,72 @@ if (-not $WhatIf -and $updatedCount -gt 0) {
     }
     
     Write-Host ""
+    Write-Host "=== Building solutions ===" -ForegroundColor Cyan
+    
+    $buildSuccessCount = 0
+    $buildFailCount = 0
+    
+    if ($solutionFiles.Count -gt 0) {
+        Write-Host "Building $($solutionFiles.Count) solution files" -ForegroundColor Green
+        foreach ($sln in $solutionFiles) {
+            Write-Host "Building: $($sln.FullName)" -ForegroundColor Cyan
+            Push-Location (Split-Path $sln.FullName)
+            try {
+                $buildOutput = dotnet build 2>&1
+                if ($LASTEXITCODE -eq 0) {
+                    Write-Host "  + Build completed successfully" -ForegroundColor Green
+                    $buildSuccessCount++
+                } else {
+                    Write-Host "  x Build failed" -ForegroundColor Red
+                    Write-Host "Build errors:" -ForegroundColor Red
+                    $buildOutput | Where-Object { $_ -match 'error' } | ForEach-Object {
+                        Write-Host "    $_" -ForegroundColor Red
+                    }
+                    $buildFailCount++
+                }
+            } catch {
+                Write-Host "  x Error: $_" -ForegroundColor Red
+                $buildFailCount++
+            } finally {
+                Pop-Location
+            }
+            Write-Host ""
+        }
+    } else {
+        Write-Host "Building individual projects..." -ForegroundColor Yellow
+        foreach ($projectFile in $projectFiles) {
+            Write-Host "Building: $($projectFile.FullName)" -ForegroundColor Cyan
+            Push-Location (Split-Path $projectFile.FullName)
+            try {
+                $buildOutput = dotnet build 2>&1
+                if ($LASTEXITCODE -eq 0) {
+                    Write-Host "  + Build completed successfully" -ForegroundColor Green
+                    $buildSuccessCount++
+                } else {
+                    Write-Host "  x Build failed" -ForegroundColor Red
+                    Write-Host "Build errors:" -ForegroundColor Red
+                    $buildOutput | Where-Object { $_ -match 'error' } | ForEach-Object {
+                        Write-Host "    $_" -ForegroundColor Red
+                    }
+                    $buildFailCount++
+                }
+            } catch {
+                Write-Host "  x Error: $_" -ForegroundColor Red
+                $buildFailCount++
+            } finally {
+                Pop-Location
+            }
+            Write-Host ""
+        }
+    }
+    
+    Write-Host "=== Build Summary ===" -ForegroundColor Cyan
+    Write-Host "Successful: $buildSuccessCount" -ForegroundColor Green
+    Write-Host "Failed:     $buildFailCount" -ForegroundColor $(if ($buildFailCount -gt 0) { "Red" } else { "Gray" })
+    
+    Write-Host ""
     Write-Host "Next steps:" -ForegroundColor Yellow
-    Write-Host "1. Build your solutions to verify the upgrade" -ForegroundColor White
+    Write-Host "1. Review any build errors above" -ForegroundColor White
     Write-Host "2. Test your applications thoroughly" -ForegroundColor White
 }
 
