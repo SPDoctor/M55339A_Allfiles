@@ -41,6 +41,7 @@ This will:
 |-----------|-------------|---------|
 | `-RootPath` | Root directory to scan for projects | `current directory` |
 | `-WhatIf` | Preview changes without modifying files | `false` |
+| `-RebuildAll` | Rebuild all projects/solutions even if already .NET 10 | `false` |
 | `-SkipRestore` | Skip the automatic package restore step | `false` |
 | `-SkipBuild` | Skip the automatic build step | `false` |
 
@@ -52,6 +53,9 @@ This will:
 
 # Upgrade all projects with restore and build
 .\Upgrade-ToNet10.ps1
+
+# Rebuild all projects even if already upgraded to .NET 10
+.\Upgrade-ToNet10.ps1 -RebuildAll
 
 # Upgrade and restore packages, but skip building
 .\Upgrade-ToNet10.ps1 -SkipBuild
@@ -89,9 +93,18 @@ After upgrading projects, the script will:
 
 1. **Find all solution files** (*.sln) in the repository
 2. **Identify solutions** that contain upgraded projects
-3. **Run `dotnet restore`** on each solution
+3. **Run `dotnet restore`** on each solution (unless using `-RebuildAll`)
 4. **Run `dotnet build`** on each solution
 5. **Report detailed results** including any errors
+
+### RebuildAll Mode
+
+When using the `-RebuildAll` parameter:
+- All solutions/projects are built regardless of whether they were upgraded
+- `dotnet build` automatically handles any necessary restore operations
+- Useful for verifying all projects build successfully after an upgrade session
+
+**Note:** Without `-RebuildAll`, only solutions containing newly upgraded projects are restored and built, saving time when some projects are already at .NET 10.
 
 ### Sample Output
 

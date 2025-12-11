@@ -6,13 +6,19 @@ param(
     [string]$RootPath = (Get-Location).Path,
     
     [Parameter(Mandatory=$false)]
-    [switch]$WhatIf = $false
+    [switch]$WhatIf = $false,
+    
+    [Parameter(Mandatory=$false)]
+    [switch]$RebuildAll = $false
 )
 
 Write-Host "=== .NET 10 Upgrade Script ===" -ForegroundColor Cyan
 Write-Host "Root Path: $RootPath" -ForegroundColor Yellow
 if ($WhatIf) {
     Write-Host "Running in WhatIf mode - no changes will be made" -ForegroundColor Yellow
+}
+if ($RebuildAll) {
+    Write-Host "RebuildAll mode - will rebuild all projects/solutions" -ForegroundColor Yellow
 }
 Write-Host ""
 
@@ -97,55 +103,62 @@ Write-Host "Updated: $updatedCount projects" -ForegroundColor Green
 Write-Host "Skipped: $skippedCount projects" -ForegroundColor Gray
 Write-Host "Errors:  $errorCount projects" -ForegroundColor $(if ($errorCount -gt 0) { "Red" } else { "Gray" })
 
-if (-not $WhatIf -and $updatedCount -gt 0) {
+if ((-not $WhatIf -and $updatedCount -gt 0) -or $RebuildAll) {
     Write-Host ""
-    Write-Host "=== Running dotnet restore ===" -ForegroundColor Cyan
+    
+    if (-not $RebuildAll) {
+        Write-Host "=== Running dotnet restore ===" -ForegroundColor Cyan
+        
+        # Find all .sln files
+        $solutionFiles = Get-ChildItem -Path $RootPath -Recurse -Filter *.sln -ErrorAction SilentlyContinue
+        
+        if ($solutionFiles.Count -gt 0) {
+            Write-Host "Found $($solutionFiles.Count) solution files" -ForegroundColor Green
+            foreach ($sln in $solutionFiles) {
+                Write-Host "Restoring: $($sln.FullName)" -ForegroundColor Cyan
+                Push-Location (Split-Path $sln.FullName)
+                try {
+                    dotnet restore
+                    if ($LASTEXITCODE -eq 0) {
+                        Write-Host "  + Restore completed successfully" -ForegroundColor Green
+                    } else {
+                        Write-Host "  x Restore failed" -ForegroundColor Red
+                    }
+                } catch {
+                    Write-Host "  x Error: $_" -ForegroundColor Red
+                } finally {
+                    Pop-Location
+                }
+                Write-Host ""
+            }
+        } else {
+            Write-Host "No solution files found. Restoring individual projects..." -ForegroundColor Yellow
+            foreach ($projectFile in $projectFiles) {
+                Write-Host "Restoring: $($projectFile.FullName)" -ForegroundColor Cyan
+                Push-Location (Split-Path $projectFile.FullName)
+                try {
+                    dotnet restore
+                    if ($LASTEXITCODE -eq 0) {
+                        Write-Host "  + Restore completed successfully" -ForegroundColor Green
+                    } else {
+                        Write-Host "  x Restore failed" -ForegroundColor Red
+                    }
+                } catch {
+                    Write-Host "  x Error: $_" -ForegroundColor Red
+                } finally {
+                    Pop-Location
+                }
+                Write-Host ""
+            }
+        }
+        
+        Write-Host ""
+    }
+    
+    Write-Host "=== Building solutions ===" -ForegroundColor Cyan
     
     # Find all .sln files
     $solutionFiles = Get-ChildItem -Path $RootPath -Recurse -Filter *.sln -ErrorAction SilentlyContinue
-    
-    if ($solutionFiles.Count -gt 0) {
-        Write-Host "Found $($solutionFiles.Count) solution files" -ForegroundColor Green
-        foreach ($sln in $solutionFiles) {
-            Write-Host "Restoring: $($sln.FullName)" -ForegroundColor Cyan
-            Push-Location (Split-Path $sln.FullName)
-            try {
-                dotnet restore
-                if ($LASTEXITCODE -eq 0) {
-                    Write-Host "  + Restore completed successfully" -ForegroundColor Green
-                } else {
-                    Write-Host "  x Restore failed" -ForegroundColor Red
-                }
-            } catch {
-                Write-Host "  x Error: $_" -ForegroundColor Red
-            } finally {
-                Pop-Location
-            }
-            Write-Host ""
-        }
-    } else {
-        Write-Host "No solution files found. Restoring individual projects..." -ForegroundColor Yellow
-        foreach ($projectFile in $projectFiles) {
-            Write-Host "Restoring: $($projectFile.FullName)" -ForegroundColor Cyan
-            Push-Location (Split-Path $projectFile.FullName)
-            try {
-                dotnet restore
-                if ($LASTEXITCODE -eq 0) {
-                    Write-Host "  + Restore completed successfully" -ForegroundColor Green
-                } else {
-                    Write-Host "  x Restore failed" -ForegroundColor Red
-                }
-            } catch {
-                Write-Host "  x Error: $_" -ForegroundColor Red
-            } finally {
-                Pop-Location
-            }
-            Write-Host ""
-        }
-    }
-    
-    Write-Host ""
-    Write-Host "=== Building solutions ===" -ForegroundColor Cyan
     
     $buildSuccessCount = 0
     $buildFailCount = 0
