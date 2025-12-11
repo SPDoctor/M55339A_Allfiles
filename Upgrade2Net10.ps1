@@ -106,6 +106,31 @@ Write-Host "Errors:  $errorCount projects" -ForegroundColor $(if ($errorCount -g
 if ((-not $WhatIf -and $updatedCount -gt 0) -or $RebuildAll) {
     Write-Host ""
     
+    # Find MSBuild path
+    $msbuildPath = $null
+    $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+    
+    if (Test-Path $vswhere) {
+        $vsPath = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
+        if ($vsPath) {
+            $msbuildPath = Join-Path $vsPath "MSBuild\Current\Bin\MSBuild.exe"
+            if (-not (Test-Path $msbuildPath)) {
+                # Try older VS versions
+                $msbuildPath = Join-Path $vsPath "MSBuild\15.0\Bin\MSBuild.exe"
+            }
+        }
+    }
+    
+    # Fallback to dotnet msbuild if Visual Studio MSBuild not found
+    if (-not $msbuildPath -or -not (Test-Path $msbuildPath)) {
+        Write-Host "Visual Studio MSBuild not found, using dotnet msbuild" -ForegroundColor Yellow
+        $msbuildPath = "dotnet"
+        $msbuildArgs = "msbuild"
+    } else {
+        Write-Host "Using MSBuild: $msbuildPath" -ForegroundColor Green
+        $msbuildArgs = ""
+    }
+    
     if (-not $RebuildAll) {
         Write-Host "=== Running dotnet restore ===" -ForegroundColor Cyan
         
@@ -169,7 +194,11 @@ if ((-not $WhatIf -and $updatedCount -gt 0) -or $RebuildAll) {
             Write-Host "Building: $($sln.FullName)" -ForegroundColor Cyan
             Push-Location (Split-Path $sln.FullName)
             try {
-                $buildOutput = dotnet build 2>&1
+                if ($msbuildArgs) {
+                    $buildOutput = & $msbuildPath $msbuildArgs $sln.FullName /t:Build /p:Configuration=Release /v:m 2>&1
+                } else {
+                    $buildOutput = & $msbuildPath $sln.FullName /t:Build /p:Configuration=Release /v:m 2>&1
+                }
                 if ($LASTEXITCODE -eq 0) {
                     Write-Host "  + Build completed successfully" -ForegroundColor Green
                     $buildSuccessCount++
@@ -195,7 +224,11 @@ if ((-not $WhatIf -and $updatedCount -gt 0) -or $RebuildAll) {
             Write-Host "Building: $($projectFile.FullName)" -ForegroundColor Cyan
             Push-Location (Split-Path $projectFile.FullName)
             try {
-                $buildOutput = dotnet build 2>&1
+                if ($msbuildArgs) {
+                    $buildOutput = & $msbuildPath $msbuildArgs $projectFile.FullName /t:Build /p:Configuration=Release /v:m 2>&1
+                } else {
+                    $buildOutput = & $msbuildPath $projectFile.FullName /t:Build /p:Configuration=Release /v:m 2>&1
+                }
                 if ($LASTEXITCODE -eq 0) {
                     Write-Host "  + Build completed successfully" -ForegroundColor Green
                     $buildSuccessCount++
