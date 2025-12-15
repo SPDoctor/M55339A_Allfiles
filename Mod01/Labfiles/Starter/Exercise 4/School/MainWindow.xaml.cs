@@ -127,7 +127,7 @@ namespace School
 
         private void studentsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
- 
+
         }
 
         // Save changes back to the database and make them permanent

@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Locking
-{  
+{
     class Program
     {
         static void Main(string[] args)
@@ -14,7 +14,7 @@ namespace Locking
             // Create a Coffee instance with enough stock to make 1000 coffees.
             Coffee coffee = new Coffee(1000);
             Random r = new Random();
-            
+
             // Create 100 iterations of a parallel for loop.
             Parallel.For(0, 100, index =>
                 {

@@ -34,7 +34,7 @@ namespace School
             schoolContext = new SchoolDBContext();
             schoolContext.Database.EnsureCreated();
             schoolContext.Teachers.Load();
-            if(schoolContext.Teachers.Count() == 0)
+            if (schoolContext.Teachers.Count() == 0)
             {
                 schoolContext.SeedDatabase();
                 schoolContext.Teachers.Load();
@@ -100,7 +100,7 @@ namespace School
 
         private void studentsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
- 
+
         }
 
         // Save changes back to the database and make them permanent

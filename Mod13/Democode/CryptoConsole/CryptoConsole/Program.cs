@@ -59,7 +59,7 @@ static string Decrypt(Stream stream, string password, byte[] salt)
 
         // Read the Initialization Vector from the filestream
         byte[] iv = new byte[aes.BlockSize / 8];
-        stream.Read(iv, 0, iv.Length);
+        stream.ReadExactly(iv);
         aes.IV = iv;
 
         using (var cryptoStream = new CryptoStream(stream,

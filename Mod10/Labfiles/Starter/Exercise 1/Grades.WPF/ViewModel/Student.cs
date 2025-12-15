@@ -18,8 +18,9 @@ namespace Grades.WPF.ViewModel
 
         public string File
         {
-            get { 
-                return string.Format(@"{0}images/{1}", @"http://localhost:5104/", Record.ImageName); 
+            get
+            {
+                return string.Format(@"{0}images/{1}", @"http://localhost:5104/", Record.ImageName);
             }
         }
 

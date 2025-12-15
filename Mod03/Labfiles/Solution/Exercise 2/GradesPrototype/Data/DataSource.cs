@@ -44,7 +44,7 @@ namespace GradesPrototype.Data
                 new Student() { StudentID = 13, UserName = "meyerc", Password = "password", TeacherID = 3, FirstName = "Chris", LastName = "Meyer" },
                 new Student() { StudentID = 14, UserName = "liyuhong", Password = "password", TeacherID = 3, FirstName = "Yuhong", LastName = "Li" },
                 new Student() { StudentID = 15, UserName = "liyan", Password = "password", TeacherID = 3, FirstName = "Yan", LastName = "Li" }
-        
+
             };
 
             Grades = new ArrayList()

@@ -112,7 +112,7 @@ namespace GradesPrototype
                     txtName.Text = string.Format("Welcome {0} {1}", SessionContext.CurrentTeacher.FirstName, SessionContext.CurrentTeacher.LastName);
 
                     // Display the list of students for the teacher
-                    GotoStudentsPage();                    
+                    GotoStudentsPage();
                     break;
             }
         }

@@ -106,39 +106,39 @@ namespace School
             }
         }
 
-            #region Predefined code
+        #region Predefined code
 
-            private void studentsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-            {
-
-            }
-
-            // Save changes back to the database and make them permanent
-            private void saveChanges_Click(object sender, RoutedEventArgs e)
-            {
-                schoolContext.SaveChanges();
-            }
-
-            #endregion
-        }
-
-        [ValueConversion(typeof(string), typeof(Decimal))]
-        class AgeConverter : IValueConverter
+        private void studentsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            public object Convert(object value, Type targetType, object parameter,
-                                  System.Globalization.CultureInfo culture)
-            {
-                return "";
-            }
 
-            #region Predefined code
-
-            public object ConvertBack(object value, Type targetType, object parameter,
-                                      System.Globalization.CultureInfo culture)
-            {
-                throw new NotImplementedException();
-            }
-
-            #endregion
         }
+
+        // Save changes back to the database and make them permanent
+        private void saveChanges_Click(object sender, RoutedEventArgs e)
+        {
+            schoolContext.SaveChanges();
+        }
+
+        #endregion
     }
+
+    [ValueConversion(typeof(string), typeof(Decimal))]
+    class AgeConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter,
+                              System.Globalization.CultureInfo culture)
+        {
+            return "";
+        }
+
+        #region Predefined code
+
+        public object ConvertBack(object value, Type targetType, object parameter,
+                                  System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
+}

@@ -104,7 +104,7 @@ namespace School
                         saveChanges.IsEnabled = true;
                     }
                     break;
-                    
+
                     // TODO: Exercise 3: Task 1a: If the user pressed Delete, remove the currently selected student
                     // TODO: Exercise 3: Task 2a: Prompt the user to confirm that the student should be removed
                     // TODO: Exercise 3: Task 3a: If the user clicked Yes, remove the student from the database
@@ -113,39 +113,39 @@ namespace School
             }
         }
 
-            #region Predefined code
+        #region Predefined code
 
-            private void studentsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-            {
-
-            }
-
-            // Save changes back to the database and make them permanent
-            private void saveChanges_Click(object sender, RoutedEventArgs e)
-            {
-                schoolContext.SaveChanges();
-            }
-
-            #endregion
-        }
-
-        [ValueConversion(typeof(string), typeof(Decimal))]
-        class AgeConverter : IValueConverter
+        private void studentsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            public object Convert(object value, Type targetType, object parameter,
-                                  System.Globalization.CultureInfo culture)
-            {
-                return "";
-            }
 
-            #region Predefined code
-
-            public object ConvertBack(object value, Type targetType, object parameter,
-                                      System.Globalization.CultureInfo culture)
-            {
-                throw new NotImplementedException();
-            }
-
-            #endregion
         }
+
+        // Save changes back to the database and make them permanent
+        private void saveChanges_Click(object sender, RoutedEventArgs e)
+        {
+            schoolContext.SaveChanges();
+        }
+
+        #endregion
     }
+
+    [ValueConversion(typeof(string), typeof(Decimal))]
+    class AgeConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter,
+                              System.Globalization.CultureInfo culture)
+        {
+            return "";
+        }
+
+        #region Predefined code
+
+        public object ConvertBack(object value, Type targetType, object parameter,
+                                  System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
+}

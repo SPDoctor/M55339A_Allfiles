@@ -10,6 +10,6 @@ namespace School
         public string LastName { get; set; } = "";
         public string Class { get; set; } = "";
         public virtual ICollection<Student> Students
-          { get; set; } = new ObservableCollection<Student>();
+        { get; set; } = new ObservableCollection<Student>();
     }
 }

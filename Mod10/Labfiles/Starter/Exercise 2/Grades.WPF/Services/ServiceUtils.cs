@@ -100,8 +100,8 @@ namespace Grades.WPF.Services
         {
             if (!IsConnected()) return null;
 
-            var parent = (from Parent p in SessionContext.DBContext.Parents 
-                          where p.UserId == parentID 
+            var parent = (from Parent p in SessionContext.DBContext.Parents
+                          where p.UserId == parentID
                           select p).FirstOrDefault();
             if (parent != null) return parent.StudentsUsers;
             return null;                                                                                                            //var students = DBContext.Execute<Student>(url);

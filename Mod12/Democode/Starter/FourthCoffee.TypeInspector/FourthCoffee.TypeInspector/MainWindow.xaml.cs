@@ -146,7 +146,7 @@ namespace FourthCoffee.TypeInspector
         private Assembly GetAssembly(string path)
         {
             // TODO: 02: Create an Assembly object. 
-            
+
         }
 
         private Type[] GetTypes(string path)
@@ -154,7 +154,7 @@ namespace FourthCoffee.TypeInspector
             var assembly = this.GetAssembly(path);
 
             // TODO: 03: Get all the types from the current assembly. 
-            
+
         }
 
         private Type GetType(string path, string typeName)
@@ -162,7 +162,7 @@ namespace FourthCoffee.TypeInspector
             var assembly = this.GetAssembly(path);
 
             // TODO: 04: Get a specific type from the current assembly. 
-            
+
         }
     }
 }

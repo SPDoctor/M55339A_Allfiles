@@ -42,7 +42,7 @@ namespace Grades.WPF
                 resultData.Add(student);
             }
 
-            
+
             list.ItemsSource = resultData;
 
             txtClass.Text = String.Format("Class {0}", SessionContext.CurrentTeacher.Class);

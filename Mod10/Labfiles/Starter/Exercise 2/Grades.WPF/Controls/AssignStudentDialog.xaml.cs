@@ -74,8 +74,8 @@ namespace Grades.WPF.Controls
 
                 // Find this student in the Students collection
                 var student = (from s in SessionContext.DBContext.Students
-                                   where s.UserId == studentID
-                                   select s).First();
+                               where s.UserId == studentID
+                               select s).First();
 
                 // Prompt the user to confirm that they wish to add this student to their class
                 string message = String.Format("Add {0} {1} to your class?", student.FirstName, student.LastName);

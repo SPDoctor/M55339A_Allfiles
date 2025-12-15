@@ -42,8 +42,8 @@ namespace Grades.WPF.Services
             }
             // If the user is not a teacher, check whether the username and password match those of a student
             var student = (from Student s in SessionContext.DBContext.Students
-                            where s.UserId == user.UserId
-                            select s).FirstOrDefault();
+                           where s.UserId == user.UserId
+                           select s).FirstOrDefault();
 
             if (student != null)
             {
@@ -57,8 +57,8 @@ namespace Grades.WPF.Services
 
             // If the user is not a student, check whether the username and password match those of a parent
             var parent = (from Parent p in SessionContext.DBContext.Parents
-                           where p.UserId == user.UserId
-                           select p).FirstOrDefault();
+                          where p.UserId == user.UserId
+                          select p).FirstOrDefault();
 
             if (parent != null)
             {
